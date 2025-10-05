@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Google株価チャート</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Google株価 (GOOGL)</h1>
+  <canvas id="stockChart"></canvas>
+  <script>
+    const chartData = {{ data | safe }};
+    const ctx = document.getElementById('stockChart').getContext('2d');
+
+    // Chart.jsのインスタンスをグローバル変数に保持
+    let stockChart;
+
+    function renderChart() {
+      // すでにチャートが存在する場合は破棄する
+      if (stockChart) {
+        stockChart.destroy();
+      }
+      stockChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+          responsive: true,
+          scales: {
+            x: { title: { display: true, text: "時間" } },
+            y: { title: { display: true, text: "株価 (USD)" } }
+          }
+        }
+      });
+    }
+
+    // 初回描画
+    renderChart();
+  </script>
+</body>
+</html>
